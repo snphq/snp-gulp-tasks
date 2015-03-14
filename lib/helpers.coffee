@@ -8,7 +8,7 @@ module.exports =
       try
         wrap[l] = require "gulp-#{l}"
       catch
-        wrap[l] = require "./plugins/#{l}"
+        wrap[l] = require "../plugins/#{l}"
     wrap
   errorHandler: (err)->
     notify.onError(

@@ -1,5 +1,5 @@
 browserSync = require "browser-sync"
-PROP = require "../config"
+PROP = require "../lib/config"
 
 baseDir = [PROP.path.build()]
 baseDir.push PROP.path.app if PROP.isDev

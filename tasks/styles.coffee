@@ -1,6 +1,6 @@
 through2 = require 'through2'
 libpath = require "path"
-helpers = require "../helpers"
+helpers = require "../lib/helpers"
 browserSync = require('browser-sync')
 $ = helpers.gulpLoad [
   'if'
@@ -14,7 +14,7 @@ $ = helpers.gulpLoad [
   'concat'
 ]
 
-PROP = require "../config"
+PROP = require "../lib/config"
 
 module.exports = ->
   ext = PROP.path.styles("ext")

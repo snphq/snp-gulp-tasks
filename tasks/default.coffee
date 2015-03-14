@@ -1,5 +1,5 @@
 sync = (require "gulp-sync") gulp
-PROP = require '../config'
+PROP = require '../lib/config'
 DEFAULT_TASK = do ->
   build = ["clean"]
   build.push ["images", "fonts", "extras"] unless PROP.isDev

@@ -1,5 +1,5 @@
 jpegoptim = require "imagemin-jpegoptim"
-PROP = require "../config"
+PROP = require "../lib/config"
 
 module.exports = ->
   gulp.src PROP.path.images "jpg"

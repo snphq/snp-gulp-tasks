@@ -1,6 +1,6 @@
 libpath = require 'path'
 through2 = require 'through2'
-helpers = require '../helpers'
+helpers = require '../lib/helpers'
 
 $ = helpers.gulpLoad [
   'if'
@@ -8,7 +8,7 @@ $ = helpers.gulpLoad [
   'sourcemaps'
   'uglify'
 ]
-PROP = require '../config'
+PROP = require '../lib/config'
 
 module.exports = ->
   gulp.src PROP.path.scripts("extras_src")

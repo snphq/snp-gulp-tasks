@@ -1,6 +1,6 @@
 _ = require 'lodash'
 through2 = require "through2"
-helpers = require "../helpers"
+helpers = require "../lib/helpers"
 notifier = require "node-notifier"
 libpath = require "path"
 
@@ -15,7 +15,7 @@ $ = helpers.gulpLoad [
   'rename'
 ]
 
-PROP = require "../config"
+PROP = require "../lib/config"
 
 module.exports =
   deps: ["imagepreload"]

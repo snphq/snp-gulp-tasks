@@ -1,5 +1,5 @@
 browserSync = require 'browser-sync'
-PROP = require '../config'
+PROP = require '../lib/config'
 module.exports = ->
   gulp.watch PROP.path.templates("watch"), ["templates"]
   gulp.watch PROP.path.styles("watch"), ["styles"]

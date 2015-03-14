@@ -6,8 +6,8 @@ $ =
   concat: require 'gulp-concat'
   sprites: require 'gulp.spritesmith'
 
-helpers = require '../helpers'
-PROP = require '../config'
+helpers = require '../lib/helpers'
+PROP = require '../lib/config'
 
 getSprites = ->
   rootDir = PROP.path.sprites 'path'

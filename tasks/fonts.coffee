@@ -1,10 +1,10 @@
-helpers = require '../helpers'
+helpers = require '../lib/helpers'
 $ = helpers.gulpLoad [
   'if'
   'rev'
   'flatten'
 ]
-PROP = require '../config'
+PROP = require '../lib/config'
 
 module.exports = ->
   gulp.src PROP.path.fonts()

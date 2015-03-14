@@ -1,4 +1,4 @@
-PROP = require '../config'
+PROP = require '../lib/config'
 imagepreload = require 'gulp-image-preload'
 module.exports = ->
   gulp.src PROP.path.images_preload()

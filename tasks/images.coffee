@@ -1,5 +1,5 @@
-PROP = require '../config'
-helpers = require '../helpers'
+PROP = require '../lib/config'
+helpers = require '../lib/helpers'
 $ = helpers.gulpLoad [
   'if'
   'rev'

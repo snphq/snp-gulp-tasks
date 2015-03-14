@@ -1,5 +1,5 @@
 zopfli = require 'gulp-zopfli'
-PROP = require '../config'
+PROP = require '../lib/config'
 libpath = require 'path'
 
 module.exports = ->

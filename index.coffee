@@ -6,7 +6,7 @@ module.exports = (gulp)->
   fs = require "fs"
   libpath = require "path"
 
-  PROP = require "./config"
+  PROP = require "./lib/config"
 
   tasksDir =   libpath.resolve __dirname, './tasks/'
   tasksDict = {}

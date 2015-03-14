@@ -1,6 +1,6 @@
 http = require 'http'
 httpProxy = require 'http-proxy'
-PROP = require '../config'
+PROP = require '../lib/config'
 _ = require "lodash"
 module.exports = ->
   proxy = new httpProxy.createProxyServer()

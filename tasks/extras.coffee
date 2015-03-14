@@ -1,5 +1,5 @@
 rev = require '../plugins/rev'
-PROP = require '../config'
+PROP = require '../lib/config'
 
 module.exports = ->
   gulp.src PROP.path.extras(), {dot: true, base: "app"}

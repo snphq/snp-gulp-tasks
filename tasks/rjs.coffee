@@ -7,7 +7,7 @@ requirejs = require "requirejs"
 del = require 'del'
 fs = require "fs"
 
-helpers = require '../helpers'
+helpers = require '../lib/helpers'
 $ = helpers.gulpLoad [
   'if'
   'rev'
@@ -15,7 +15,7 @@ $ = helpers.gulpLoad [
   'uglify'
 ]
 
-PROP = require '../config'
+PROP = require '../lib/config'
 
 module.exports =
   deps: ["scripts"]
