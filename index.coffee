@@ -8,6 +8,7 @@ module.exports = (gulp)->
 
   taskLoader = new TaskLoader
   taskLoader.collect libpath.resolve __dirname, './tasks/'
+  taskLoader.collect './gulp/tasks/'
   taskLoader.load()
 
 
