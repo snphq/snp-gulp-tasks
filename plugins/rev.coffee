@@ -26,8 +26,9 @@ toRevFile = (file)->
   file.path = toRevPath file.orig_path, hash
   file
 
-toCdn = (url, path="", host)->
-  host + libpath.join "/" + path, url
+toCdn = (url, path="", host, rootSlash=false)->
+  path = "/#{path}" if host or rootSlash
+  host + libpath.join path, url
 
 toReplace = (orig, _new, source=orig)->
   quest = orig.indexOf("?")
@@ -136,6 +137,9 @@ gulprev.jade_parser = (resource=".", output=".", host="")->
     if val[0] is "/"
       rootSlash = true
       val = val[1..]
+    else
+      rootSlash = false
+    console.log "resource",resource
     absurl = libpath.resolve resource, val
     absurl = absurl.split("#")[0].split("?")[0]
     _file = CACHE[absurl]
@@ -146,7 +150,7 @@ gulprev.jade_parser = (resource=".", output=".", host="")->
         attr.val = toReplace val, cdn, attr.val
       return attr
     relurl = libpath.relative output, _file.path
-    cdn = toCdn relurl, "", host
+    cdn = toCdn relurl, "", host, rootSlash
     _val = if rootSlash then "/#{val}" else val
     attr.val = toReplace _val, cdn, attr.val
     attr
