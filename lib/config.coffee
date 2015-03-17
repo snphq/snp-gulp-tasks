@@ -49,7 +49,7 @@ PROP = do ->
         data: jade_mode: PROP.jade.mode()
         filters:{}
       unless PROP.isDev
-        rev = require './plugins/rev'
+        rev = require '../plugins/rev'
         result.parser = rev.jade_parser(
           PROP.path.app
           PROP.path.build()

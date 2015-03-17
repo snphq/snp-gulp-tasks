@@ -7,7 +7,7 @@ DEFAULT_TASK = do ->
   build.push "cssimage"
   build.push "styles"
   build.push if PROP.isDev then "scripts" else "rjs"
-  build.push "extras:js" unless PROP.isDev
+  build.push "extras_js" unless PROP.isDev
   build.push "templates"
   build.push "bs" if PROP.isSrv
   build.push "proxy" if PROP.isSrv
