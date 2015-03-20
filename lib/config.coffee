@@ -192,7 +192,7 @@ PROP = do ->
         when "jpg" then libpath.join PROP.path.build(), "images", "**", "*.{jpg,jpeg}"
         when "png" then libpath.join PROP.path.build(), "images", "**", "*.png"
         when "dest_src" then libpath.join PROP.path.build(), "images", "**", "*.{gif,png,jpg,jpeg,webp}"
-        else libpath.join PROP.path.app, "images", "**", "*.{gif,png,jpg,jpeg,webp}"
+        else libpath.join PROP.path.app, "images", "**", "*.{gif,png,jpg,jpeg,webp,svg}"
 
     images_preload:->
       if PROP.isDev
