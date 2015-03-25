@@ -74,5 +74,8 @@
     "through2": "^0.6.3",
     "urldata": "0.0.1",
     "vinyl-paths": "^1.0.0"
+  },
+  "devDependencies": {
+    "gulp-gzip": "^1.1.0"
   }
 }
