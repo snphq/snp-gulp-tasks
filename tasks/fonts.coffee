@@ -10,4 +10,4 @@ module.exports = ->
   gulp.src PROP.path.fonts()
     .pipe $.if !PROP.isDev, $.rev.font()
     .pipe $.flatten()
-    .pipe gulp.dest PROP.path.fonts("dest")
+    .pipe gulp.dest PROP.path.fonts("dest"), {mode: 0o644}
