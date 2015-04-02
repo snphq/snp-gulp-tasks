@@ -8,6 +8,15 @@ _ = require "lodash"
 
 CACHE = {}
 
+rxReplacePath = /\\/g
+isWindows = (libpath.sep is '\\')
+
+fixWindowsPath = (path)->
+  if isWindows
+    path.replace rxReplacePath, '/'
+  else
+    path
+
 toHash = (contents)->
   crypto.createHash("md5").update(contents).digest("hex")[..8]
 
@@ -112,6 +121,7 @@ gulprev.css = (root=".", host="")-> through2.obj (file, enc, callback)->
     value = decl.value
     for i in [0..rev_urls.length-1]
       if r_url = rev_urls[i]
+        rev_url_replaced = fixWindowsPath rev_urls[i]
         cdn = toCdn rev_urls[i], "styles", host
         value = toReplace urls[i], cdn, value
     decl.value = value
@@ -146,6 +156,7 @@ gulprev.jade_parser = (resource=".", output=".", host="")->
         attr.val = toReplace val, cdn, attr.val
       return attr
     relurl = libpath.relative output, _file.path
+    relurl = fixWindowsPath relurl
     cdn = toCdn relurl, "", host
     _val = if rootSlash then "/#{val}" else val
     attr.val = toReplace _val, cdn, attr.val
