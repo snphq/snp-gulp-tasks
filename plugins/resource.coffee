@@ -28,7 +28,7 @@ resource = (vendor_folder="vendor", external_folter="app/bower_components")-> th
     result = postcss().use(
       atImport(
         transform: (data, filename)->
-          if /\.scss$/.test filename
+          if (/\.s[ca]ss$/.test filename)
             data = sass.renderSync {
               file: filename
             }
