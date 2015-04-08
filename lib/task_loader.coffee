@@ -11,7 +11,9 @@ class TaskLoader
     tasksDir = libpath.resolve tasksDir
     return unless fs.existsSync tasksDir
     for task in fs.readdirSync tasksDir
-      {name} = (libpath.parse task)
+      ext = libpath.extname task
+      name = libpath.basename task, ext
+      continue unless ext is ".coffee"
       @tasksDict[name] = libpath.join tasksDir, task
 
   load: ->
