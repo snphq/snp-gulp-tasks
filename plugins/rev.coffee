@@ -94,7 +94,13 @@ gulprev.css = (root=".", host="")-> through2.obj (file, enc, callback)->
         url = "..#{_url}"
       else
         url = "./#{_url}"
-      url = url.split("#")[0].split("?")[0]
+      urlTail = ""
+      i = url.indexOf("?")
+      if i < 0
+        i = url.indexOf("#")
+      if i > -1
+        urlTail = url.slice(i)
+        url = url.slice(0, i)
       #abs path
       absurl = libpath.resolve filedir, url
 
@@ -110,7 +116,7 @@ gulprev.css = (root=".", host="")-> through2.obj (file, enc, callback)->
       if absurl is _file.path
         notfound.push _url
         return
-      libpath.relative root, _file.path
+      (libpath.relative root, _file.path) + urlTail
 
     notfound.forEach (url)->
       return if url.indexOf(";base64,") > -1
