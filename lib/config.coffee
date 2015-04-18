@@ -7,13 +7,21 @@ cfg = require libpath.resolve "./.gulpconfig"
 
 server = _.defaults cfg.server, {
   host: "0.0.0.0"
-  port: 9000
+  port: 3000
   fallback: "index.html"
 }
 
 
 cdn = _.defaults cfg.cdn, {
   host: ""
+}
+
+cfg.browserSync ?= {}
+browserSync = _.defaults cfg.browserSync, {
+  reloadDelay: 500
+  reloadDebounce: 2000
+  port: server.port
+  open: false
 }
 
 g_mode = ->
@@ -35,6 +43,7 @@ PROP = do ->
 
   server: server
   cdn: cdn
+  browserSync: browserSync
 
   jade:
     mode: (prop=gutil.env.mode)->
