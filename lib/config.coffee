@@ -57,12 +57,6 @@ PROP = do ->
         pretty: PROP.isDev
         data: jade_mode: PROP.jade.mode()
         filters:{}
-      unless PROP.isDev
-        rev = require '../plugins/rev'
-        result.parser = rev.jade_parser(
-          PROP.path.app
-          PROP.path.build()
-        )
       result
 
   amd:
@@ -140,6 +134,8 @@ PROP = do ->
         when "dist" then "dist"
         when "prod" then "prod"
         else ".tmp"
+    build_files: ->
+      libpath.join PROP.path.build(), "**"
 
     scripts: (prop)->
       name = "main.js"
