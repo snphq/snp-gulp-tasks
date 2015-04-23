@@ -59,7 +59,7 @@ resource.download = -> through2.obj (file, enc, cb)->
 
 analyse = (decl, vendor_folder, root, prefix)->
   urldata(decl.value).forEach (_item)->
-    return if _item.indexOf(";base64,iVBORw0") > -1
+    return if _item.indexOf(";base64,") > -1 or _item.indexOf("data:image") is 0
     item = _item.split("?")[0].split("#")[0]
 
     realpath = libpath.resolve root, item
