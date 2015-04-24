@@ -10,7 +10,6 @@ fs = require "fs"
 helpers = require '../lib/helpers'
 $ = helpers.gulpLoad [
   'if'
-  'rev'
   'sourcemaps'
   'uglify'
 ]
@@ -43,7 +42,6 @@ module.exports =
           (cb)-> del PROP.path.scripts(".dest"), cb
         ], finish
       )
-      .pipe $.if !PROP.isDev, $.rev.script()
       .pipe $.sourcemaps.init()
       .pipe $.if !PROP.isDev, $.uglify("main.js", {outSourceMap: true})
       .pipe $.sourcemaps.write(".")

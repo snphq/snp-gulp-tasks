@@ -4,7 +4,6 @@ helpers = require '../lib/helpers'
 
 $ = helpers.gulpLoad [
   'if'
-  'rev'
   'sourcemaps'
   'uglify'
 ]
@@ -16,7 +15,6 @@ module.exports = ->
       file.base = libpath.resolve file.base, "../"
       @push file
       callback()
-    .pipe $.if !PROP.isDev, $.rev.script()
     .pipe $.sourcemaps.init {loadMaps: true}
     .pipe $.if !PROP.isDev, $.uglify()
     .pipe $.sourcemaps.write(".")
