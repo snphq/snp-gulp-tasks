@@ -11,6 +11,7 @@ $ = helpers.gulpLoad [
   'sourcemaps'
   'postcss'
   'concat'
+  'bless'
 ]
 
 PROP = require "../lib/config"
@@ -62,6 +63,7 @@ module.exports = ->
       cb()
 
     .pipe $.concat("main.css")
+    .pipe $.bless()
     .pipe browserSync.reload {stream: true}
     .pipe $.sourcemaps.write(".")
     .pipe gulp.dest PROP.path.styles("dest")
