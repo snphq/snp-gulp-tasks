@@ -16,7 +16,7 @@ module.exports = ->
     options.routers[route].matcher = new RegExp(route)
   options.local =
     host: "localhost"
-    port: PROP.server.port
+    port: PROP.browserSync.port
 #  PROP.server.port = options.port
   server = http.createServer (req, res)=>
     routers = options.routers || {}

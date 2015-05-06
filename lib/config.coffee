@@ -14,6 +14,7 @@ cfg.browserSync ?= {}
 browserSync = _.defaults cfg.browserSync, {
   reloadDelay: 500
   reloadDebounce: 2000
+  port: 3000
   open: false
 }
 
@@ -34,7 +35,6 @@ PROP = do ->
       else {DEBUG:true}
     {context}
 
-  server: server
   cdn: cdn
   browserSync: browserSync
 
