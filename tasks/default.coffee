@@ -14,6 +14,7 @@ DEFAULT_TASK = do ->
   build.push "watch" if PROP.isSrv and PROP.isDev
   build.push "imagemin" if PROP.isImageMin
   build.push "revision" unless PROP.isDev
+  build.push "git-version" unless PROP.isDev
   build.push "compress" unless PROP.isDev
   build
 

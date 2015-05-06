@@ -72,6 +72,7 @@
     "postcss-import": "^5.0.0",
     "postcss-url": "^3.0.0",
     "requirejs": "^2.1.15",
+    "rsvp": "^3.0.18",
     "through2": "^0.6.3",
     "urldata": "0.0.1",
     "vinyl-paths": "^1.0.0"
