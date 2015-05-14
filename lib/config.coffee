@@ -10,6 +10,8 @@ cdn = _.defaults cfg.cdn, {
   host: ""
 }
 
+cfg.imagemin ?= true
+
 cfg.browserSync ?= {}
 browserSync = _.defaults cfg.browserSync, {
   reloadDelay: 500
@@ -22,11 +24,12 @@ g_mode = ->
   gutil.env.mode || "dist"
 
 PROP = do ->
+  isDev = not (gutil.env.mode in ["dist", "prod"])
 
-  isDev: not (gutil.env.mode in ["dist", "prod"])
+  isDev: isDev
   isSrv: not gutil.env.build
   isNotify: not gutil.env.build
-  isImageMin: gutil.env.imagemin or (cfg.imagemin? and (gutil.env.mode in ["dist", "prod"]) )
+  isImageMin: cfg.imagemin? and isDev
 
   preprocess: (prop=gutil.env.mode)->
     context = switch prop
