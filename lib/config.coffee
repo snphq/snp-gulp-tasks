@@ -26,7 +26,7 @@ PROP = do ->
   isDev: not (gutil.env.mode in ["dist", "prod"])
   isSrv: not gutil.env.build
   isNotify: not gutil.env.build
-  isImageMin: gutil.env.imagemin
+  isImageMin: gutil.env.imagemin or (cfg.imagemin? and (gutil.env.mode in ["dist", "prod"]) )
 
   preprocess: (prop=gutil.env.mode)->
     context = switch prop
