@@ -2,61 +2,91 @@ http = require 'http'
 httpProxy = require 'http-proxy'
 PROP = require '../lib/config'
 _ = require "lodash"
-module.exports = ->
+RSVP = require 'rsvp'
+
+options = do ->
+  options = PROP.proxy || {} # options()
+  options.remotes = options.remotes() if _.isFunction options.remotes
+  options.remoteRoutes = options.remoteRoutes() if _.isFunction options.remoteRoutes
+  options.localRoutes = options.localRoutes() if _.isFunction options.localRoutes
+
+  options.local =
+    host: "localhost"
+    port: PROP.browserSync.port
+  options
+
+checkByRoutes = (req, res, routes)->
+  promise = new RSVP.Promise (resolve, reject)->
+    checked = false
+    for r in routes when r.test req.url
+      checked = true
+      break
+    resolve checked
+  promise
+
+checkLazy = (req, res, server)->
+  reqOptions =
+    hostname: options.local.host
+    port: options.local.port
+    path: req.url
+    method: 'HEAD'
+  promise = new RSVP.Promise (resolve, reject)->
+    checkRequest = http.request reqOptions, (checkResponce) =>
+      local = (checkResponce.statusCode == 404 and options.remotes.active)
+      resolve local
+    checkRequest.on 'socket', (socket)->
+      socket.setTimeout 200
+      socket.on 'timeout', -> checkRequest.abort()
+    checkRequest.end()
+    checkRequest.on 'error', (error, code)->
+      gutil.log "#{error.code} #{error}"
+  promise
+
+createProxyServer = ->
   proxy = new httpProxy.createProxyServer()
   proxy.on 'error', (err, req, res) ->
     gutil.log gutil.colors.red err
     res.end()
-  options = PROP.proxy || {} # @options()
-  if "function" == typeof options.remotes
-    options.remotes = options.remotes()
-  if "function" == typeof options.routers
-    options.routers = options.routers()
-  _.each options.routers, (param, route)->
-    options.routers[route].matcher = new RegExp(route)
-  options.local =
-    host: "localhost"
-    port: PROP.browserSync.port
-#  PROP.server.port = options.port
-  server = http.createServer (req, res)=>
-    routers = options.routers || {}
-    destination = null
-    for matcher, dest of routers
-      if dest.matcher.test(req.url)
-        destination = dest
-        break
+  proxy
 
-    if destination != null
-        opts =
-          changeOrigin: true
-        opts.target = "http" + (if destination.https then "s" else "") +
-          "://" + destination.host + ":" + destination.port
-        proxy.web req, res, opts
-    else
-      reqOptions = {
-        hostname: options.local.host
-        port: options.local.port
-        path: req.url
-        method: 'HEAD'
-      }
-      checkRequest = http.request reqOptions, (checkResponce) =>
-        proxyOptions = {changeOrigin: true}
-        if checkResponce.statusCode == 404 and options.remotes.active
-          settingsSource = options.remotes
+class Server
+  constructor: ()->
+    @server = http.createServer @onRequest
+    @proxy = createProxyServer()
+
+  listen: -> @server.listen(PROP.proxy.port)
+
+  proxyRemote: (req, res)-> @proxyRequest req, res, false
+
+  proxyLocal: (req, res)-> @proxyRequest req, res, true
+
+  proxyRequest: (req , res, local)->
+    proxyOptions = {changeOrigin: true}
+    settings = if local then options.local else options.remotes
+    proxyOptions.target = do ->
+      protocol = if settings.https then "https" else "http"
+      "#{protocol}://#{settings.host}:#{settings.port}"
+    @proxy.web req, res, proxyOptions
+
+  proxyLocalPushState: (req, res)->
+    checkByRoutes req, res, options.localRoutes
+    .then (isResource)=>
+      req.url = options.pushStateIndex unless isResource
+      @proxyLocal req, res
+
+  onRequest: (req, res)=>
+    checkByRoutes req, res, options.remoteRoutes
+    .then (isRemote)=>
+      if isRemote
+        @proxyRemote req, res
+      else
+        if options.pushState
+          @proxyLocalPushState req, res
         else
-          settingsSource = options.local
+          @proxyLocal req, res
+    return null
 
-        proxyOptions.target = "http" + (if settingsSource.https then "s" else "") +
-          "://" + settingsSource.host + ":" + settingsSource.port
-        proxy.web req, res, proxyOptions
 
-      checkRequest.on 'socket', (socket)->
-        socket.setTimeout 100
-        socket.on 'timeout', ->
-          checkRequest.abort()
-      checkRequest.end()
-
-      checkRequest.on 'error', (error, code)->
-        console.log arguments[0]['code']
-        console.log "#{error.code} #{error}"
-  server.listen(PROP.proxy.port);
+module.exports = ->
+  server = new Server
+  server.listen()

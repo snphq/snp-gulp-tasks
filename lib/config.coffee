@@ -113,10 +113,16 @@ PROP = do ->
   open: ->
     url: "http://" + open.host + ":" + open.port + open.path
 
-  proxy:
+  proxy: do ->
+    mode = gutil.env.proxy or cfg.proxy.activeRemote
+    unless cfg.proxy.remotes[mode]
+      mode = _.keys(cfg.proxy.remotes)[0]
     port: cfg.proxy.port or 9001
-    remotes: cfg.proxy.remotes[g_mode()]
-    routers: cfg.proxy.routers[g_mode()]
+    pushState: cfg.proxy.pushState or false
+    pushStateIndex: "index.html"
+    remotes: cfg.proxy.remotes[mode]
+    remoteRoutes: cfg.proxy.remoteRoutes or []
+    localRoutes: cfg.proxy.localRoutes or []
 
   path: {
     app: cfg.app or "app"
