@@ -1,6 +1,6 @@
 {
   "name": "snp-gulp-tasks",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Salt & Pepper gulp tasks set",
   "main": "index.js",
   "scripts": {
