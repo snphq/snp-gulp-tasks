@@ -3,7 +3,7 @@ RevAll = require "gulp-rev-all"
 
 opts = {
   dontGlobal: [ /^\/favicon.ico$/g, /\/robots.txt$/g ],
-  dontRenameFile: [ "\.html" ]
+  dontRenameFile: ["\.html", "\.pdf", /^\/files\//g]
   prefix: PROP.cdn.host
 }
 
