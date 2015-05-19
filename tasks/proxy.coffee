@@ -45,7 +45,7 @@ checkLazy = (req, res, server)->
 createProxyServer = ->
   proxy = new httpProxy.createProxyServer()
   proxy.on 'error', (err, req, res) ->
-    gutil.log gutil.colors.red err
+    gutil.log gutil.colors.red err, "on url", gutil.colors.red req.url
     res.end()
   proxy
 
