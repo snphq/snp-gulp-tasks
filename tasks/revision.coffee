@@ -1,15 +1,19 @@
 PROP = require "../lib/config"
 RevAll = require "gulp-rev-all"
+gif = require "gulp-if"
 
 opts = {
-  dontGlobal: [ /^\/favicon.ico$/g, /\/robots.txt$/g ],
-  dontRenameFile: ["\.html", "\.pdf", /^\/files\//g]
-  prefix: PROP.cdn.host
+ dontGlobal: [ /^\/favicon.ico$/g, /\/robots.txt$/g, /^\/files\//g ],
+ dontRenameFile: [ "\.html"  ]
+ prefix: PROP.cdn.host
 }
 
 revAll = new RevAll opts
 
 module.exports = ->
-  gulp.src PROP.path.build_files()
-    .pipe revAll.revision()
-    .pipe gulp.dest PROP.path.build()
+ re_pdf = /\.pdf$/
+ condition = (f)->
+   not re_pdf.test f.path
+ gulp.src PROP.path.build_files()
+   .pipe gif condition, revAll.revision()
+   .pipe gulp.dest PROP.path.build()
