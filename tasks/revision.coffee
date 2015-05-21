@@ -4,7 +4,8 @@ gif = require "gulp-if"
 
 opts = {
  dontGlobal: [ /^\/favicon.ico$/g, /\/robots.txt$/g, /^\/files\//g ],
- dontRenameFile: [ "\.html"  ]
+ dontRenameFile: ["\.html"]
+ dontUpdateReference: ["\.html"]
  prefix: PROP.cdn.host
 }
 
