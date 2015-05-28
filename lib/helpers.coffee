@@ -17,6 +17,7 @@ module.exports =
       message:  "Error: <%= error.message %>"
       sound:    "Beep"
     )(err)
+    gutil.log err
     @emit "end"
   emptyStream: (fileName)->
     stream = Stream.Readable({ objectMode: true })
