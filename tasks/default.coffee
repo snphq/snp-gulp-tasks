@@ -12,7 +12,7 @@ DEFAULT_TASK = do ->
   build.push "bs" if PROP.isSrv
   build.push "proxy" if PROP.isSrv
   build.push "watch" if PROP.isSrv and PROP.isDev
-  build.push "imagemin" if PROP.isImageMin
+  build.push "imagemin"
   build.push "revision" unless PROP.isDev
   build.push "git-version" unless PROP.isDev
   build.push "compress" unless PROP.isDev
