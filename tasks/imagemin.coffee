@@ -1,6 +1,6 @@
 module.exports = {
   deps: [
-    "imagemin.jpg"
+    # "imagemin.jpg"
     "imagemin.png"
   ]
 }
