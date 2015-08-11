@@ -38,7 +38,7 @@
     "gulp-coffee": "^2.2.1",
     "gulp-coffeelint": "^0.4.0",
     "gulp-concat": "^2.4.1",
-    "gulp-css-image": "0.2.0",
+    "gulp-css-image": "^0.2.1",
     "gulp-filter": "^2.0.0",
     "gulp-flatten": "0.0.4",
     "gulp-gzip": "^1.1.0",
