@@ -1,3 +1,4 @@
+browserSync = require 'browser-sync'
 PROP = require '../lib/config'
 helpers = require '../lib/helpers'
 $ = helpers.gulpLoad [
@@ -15,3 +16,4 @@ module.exports = ->
     .pipe $.ignore.exclude(condition)
     .pipe $.jade PROP.jade.options()
     .pipe gulp.dest PROP.path.templates("dest")
+    .pipe browserSync.stream() if PROP.isSrv and PROP.isDev
