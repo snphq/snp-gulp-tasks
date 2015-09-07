@@ -10,10 +10,12 @@ $ = helpers.gulpLoad [
 
 module.exports = ->
   condition = "**/_*.jade"
-  gulp.src PROP.path.templates()
-    .pipe $.if PROP.isNotify, $.plumber
-      errorHandler: helpers.errorHandler
-    .pipe $.ignore.exclude(condition)
-    .pipe $.jade PROP.jade.options()
-    .pipe gulp.dest PROP.path.templates("dest")
-    .pipe browserSync.stream() if PROP.isSrv and PROP.isDev
+  stream = gulp.src PROP.path.templates()
+  .pipe $.if PROP.isNotify, $.plumber
+    errorHandler: helpers.errorHandler
+  .pipe $.ignore.exclude(condition)
+  .pipe $.jade PROP.jade.options()
+  .pipe gulp.dest PROP.path.templates("dest")
+  if PROP.isSrv
+    stream.pipe browserSync.stream()
+  stream
