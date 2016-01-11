@@ -18,14 +18,14 @@ PROP = require "../lib/config"
 
 module.exports = ->
   ext = PROP.path.styles("ext")
-  filter_vendor = $.filter "vendor.css"
-  filter_scss = $.filter ["*.scss","*.sass"]
+  filter_vendor = $.filter "vendor.css", {restore: true}
+  filter_scss = $.filter ["*.scss","*.sass"], {restore: true}
   csswring = require "csswring"
-  autoprefixer = require "autoprefixer-core"
+  autoprefixer = require "autoprefixer"
   postcssUrl = require "postcss-url"
   ORDER = []
   postprocessors = [
-    autoprefixer browsers:[
+    autoprefixer browsers: [
       "last 222 version"
       "ie >= 8"
       "ff >= 17"
@@ -45,10 +45,10 @@ module.exports = ->
     .pipe $.if PROP.isNotify, $.plumber {errorHandler: helpers.errorHandler}
     .pipe filter_scss
     .pipe $.sass includePaths: [PROP.path.styles("path")]
-    .pipe filter_scss.restore()
+    .pipe filter_scss.restore
     .pipe filter_vendor
     .pipe $.resource("resources")
-    .pipe filter_vendor.restore end:true
+    .pipe filter_vendor.restore
     .pipe $.sourcemaps.init()
     .pipe $.postcss postprocessors
     .pipe through2.obj ((file, enc, cb)->

@@ -20,8 +20,8 @@ PROP = require "../lib/config"
 module.exports =
   deps: ["imagepreload"]
   fn: ->
-    filter_preprocess = $.filter "preprocess_template.js"
-    filter_main_js = $.filter PROP.path.scripts("name")
+    filter_preprocess = $.filter "preprocess_template.js", {restore: true}
+    filter_main_js = $.filter PROP.path.scripts("name"), {restore: true}
 
     linter = []
     gulp.src PROP.path.scripts()
@@ -56,10 +56,10 @@ module.exports =
       .pipe filter_preprocess
       .pipe $.preprocess PROP.preprocess()
       .pipe $.rename basename: "preprocess"
-      .pipe filter_preprocess.restore(end:true)
+      .pipe filter_preprocess.restore
 
       .pipe $.if !PROP.isDev, filter_main_js
       .pipe $.if !PROP.isDev, PROP.amd.optionsExtract
-      .pipe $.if !PROP.isDev, filter_main_js.restore(end:true)
+      .pipe $.if !PROP.isDev, filter_main_js.restore
 
       .pipe gulp.dest PROP.path.scripts("dest")
