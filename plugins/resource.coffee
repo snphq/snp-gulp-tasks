@@ -27,20 +27,20 @@ resource = (vendor_folder="vendor", external_folter="app/bower_components")-> th
   try
     result = postcss().use(
       atImport(
-        transform: (data, filename)->
+        transform: (content, filename)->
           if (/\.s[ca]ss$/.test filename)
-            data = sass.renderSync {
+            content = sass.renderSync {
               file: filename
             }
           try
             result = postcss().use(
               resource.postcss_loader
             ).process(
-              data, {filename, vendor_folder, external_folter}
+              content, {filename, vendor_folder, external_folter}
             ).css
           catch e
-            gutil.log  e
-            result = data
+            gutil.warn gutil.colors.magenta('[plugin/resource]'), e
+            result = content
           result
       )
     ).process(file.contents).css
@@ -75,18 +75,19 @@ analyse = (decl, vendor_folder, root, prefix)->
     decl.value = decl.value.replace item, csspath
     resource.DATA.push realpath, virtualpath
 
-resource.postcss_loader = (css, {filename, vendor_folder, external_folter})->
+resource.postcss_loader = (css, {opts})->
+  {filename, vendor_folder, external_folter} = opts
   abs_external_folder = libpath.resolve ".", external_folter
   relative_filename = libpath.relative abs_external_folder, filename
   prefix = relative_filename.split(libpath.sep)[0]
   root = libpath.dirname(filename)
-  css.eachAtRule (atRule)->
+  css.walkAtRules (atRule)->
     return if atRule.name isnt "font-face"
     atRule.each (decl)->
       return if decl.prop isnt "src"
       analyse(decl, vendor_folder, root, prefix)
 
-  css.eachDecl (decl)->
+  css.walkDecls (decl)->
     isRecource = (
       decl.prop.indexOf("background") > -1 or
       decl.prop.indexOf("border-image") > -1
