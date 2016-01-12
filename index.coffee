@@ -10,6 +10,3 @@ module.exports = (gulp)->
   taskLoader.collect libpath.resolve __dirname, './tasks/'
   taskLoader.collect './gulp/tasks/'
   taskLoader.load()
-
-
-  PROP = require "./lib/config"

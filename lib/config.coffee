@@ -6,6 +6,18 @@ _ = require "lodash"
 cfg = require libpath.resolve "./.gulpconfig"
 
 
+# config format validation
+do ->
+  whereStr = gutil.colors.red '.gulpconfig'
+  for fieldName in [
+    'getDefaultTaskList'
+    'proxy'
+  ] when not cfg[fieldName]
+    throw new gutil.PluginError {
+      plugin: 'snp-gulp-tasks'
+      message: "#{gutil.colors.yellow fieldName} is not defined in #{whereStr}"
+    }
+
 cdn = _.defaults cfg.cdn, {
   host: ""
 }
@@ -30,6 +42,7 @@ PROP = do ->
   isSrv: not gutil.env.build
   isNotify: not gutil.env.build
   isImageMin: cfg.imagemin? and not isDev
+  getDefaultTaskList: cfg.getDefaultTaskList
 
   preprocess: (prop=gutil.env.mode)->
     context = switch prop
