@@ -1,8 +1,8 @@
 _ = require 'lodash'
-through2 = require "through2"
-helpers = require "../lib/helpers"
-notifier = require "node-notifier"
-libpath = require "path"
+through2 = require 'through2'
+helpers = require '../lib/helpers'
+notifier = require 'node-notifier'
+libpath = require 'path'
 
 $ = helpers.gulpLoad [
   'if'
@@ -15,17 +15,17 @@ $ = helpers.gulpLoad [
   'rename'
 ]
 
-PROP = require "../lib/config"
+PROP = require '../lib/config'
 
 module.exports =
-  deps: ["imagepreload"]
+  deps: ['imagepreload']
   fn: ->
-    filter_preprocess = $.filter "preprocess_template.js", {restore: true}
-    filter_main_js = $.filter PROP.path.scripts("name"), {restore: true}
+    filter_preprocess = $.filter 'preprocess_template.js', {restore: true}
+    filter_main_js = $.filter PROP.path.scripts('name'), {restore: true}
 
     linter = []
     gulp.src PROP.path.scripts()
-      .pipe $.if PROP.isNotify, $.plumber {errorHandler:helpers.errorHandler}
+      .pipe $.if PROP.isNotify, $.plumber {errorHandler: helpers.errorHandler}
       .pipe $.coffeelint('.coffeelintrc')
       .pipe $.if PROP.isNotify, through2.obj ((file, enc, cb)->
         c = file.coffeelint
@@ -33,33 +33,33 @@ module.exports =
           linter.push [c, file.relative]
         @push file
         cb()
-      ),(cb)->
-        notifyString = ""
+      ), (cb)->
+        notifyString = ''
         linter.forEach ([c, name])->
           notifyString += _.map(c.results, (r)->
             "#{r.level} #{name}: #{r.lineNumber} - #{r.message}"
-          ).join("\n")
+          ).join '\n'
         if notifyString
           notifier.notify
-            title:    "Coffeelint message"
-            subtitle: "See console to full information"
-            message:  notifyString
-            sound:    "Tink"
-            icon: libpath.join(__dirname, "img", "coffee-error.jpg")
+            title: 'Coffeelint message'
+            subtitle: 'See console to full information'
+            message: notifyString
+            sound: 'Tink'
+            icon: libpath.join(__dirname, 'img', 'coffee-error.jpg')
         linter = []
         cb()
       .pipe $.coffeelint.reporter()
 
       .pipe $.coffee(bare: true)
-      .pipe $.cached("scripts")
+      .pipe $.cached 'scripts'
 
       .pipe filter_preprocess
       .pipe $.preprocess PROP.preprocess()
-      .pipe $.rename basename: "preprocess"
+      .pipe $.rename basename: 'preprocess'
       .pipe filter_preprocess.restore
 
       .pipe $.if !PROP.isDev, filter_main_js
       .pipe $.if !PROP.isDev, PROP.amd.optionsExtract
       .pipe $.if !PROP.isDev, filter_main_js.restore
 
-      .pipe gulp.dest PROP.path.scripts("dest")
+      .pipe gulp.dest PROP.path.scripts 'dest'

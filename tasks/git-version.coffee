@@ -14,7 +14,7 @@ module.exports = ->
         return
       versionFile = new gutil.File
         contents: new Buffer(stdout)
-        path: "version.txt"
+        path: 'version.txt'
       gutil.log "Build version is #{stdout}"
       @push versionFile
       written = true

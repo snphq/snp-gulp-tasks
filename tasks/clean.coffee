@@ -1,5 +1,5 @@
-vinylPaths = require "vinyl-paths"
-del = require "del"
+vinylPaths = require 'vinyl-paths'
+del = require 'del'
 PROP = require '../lib/config'
 
 module.exports = ->

@@ -1,6 +1,6 @@
-fs = require "fs"
-libpath = require "path"
-_ = require "lodash"
+fs = require 'fs'
+libpath = require 'path'
+_ = require 'lodash'
 
 class TaskLoader
   tasksDict: null
@@ -13,7 +13,7 @@ class TaskLoader
     for task in fs.readdirSync tasksDir
       ext = libpath.extname task
       name = libpath.basename task, ext
-      continue unless ext is ".coffee"
+      continue unless ext is '.coffee'
       @tasksDict[name] = libpath.join tasksDir, task
 
   load: ->
@@ -28,5 +28,7 @@ class TaskLoader
         gulp.task.apply gulp, args
       else
         gutil.log gutil.colors.red "Gulp task load: wrong task structure #{taskName}: #{path}"
+
+
 
 module.exports = TaskLoader

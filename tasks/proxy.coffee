@@ -1,7 +1,7 @@
 http = require 'http'
 httpProxy = require 'http-proxy'
 PROP = require '../lib/config'
-_ = require "lodash"
+_ = require 'lodash'
 RSVP = require 'rsvp'
 
 options = do ->
@@ -11,7 +11,7 @@ options = do ->
   options.localRoutes = options.localRoutes() if _.isFunction options.localRoutes
 
   options.local =
-    host: "localhost"
+    host: 'localhost'
     port: PROP.browserSync.port
   options
 
@@ -31,7 +31,7 @@ checkLazy = (req, res, server)->
     path: req.url
     method: 'HEAD'
   promise = new RSVP.Promise (resolve, reject)->
-    checkRequest = http.request reqOptions, (checkResponce) =>
+    checkRequest = http.request reqOptions, (checkResponce) ->
       local = (checkResponce.statusCode == 404 and options.remotes.active)
       resolve local
     checkRequest.on 'socket', (socket)->
@@ -45,12 +45,12 @@ checkLazy = (req, res, server)->
 createProxyServer = ->
   proxy = new httpProxy.createProxyServer()
   proxy.on 'error', (err, req, res) ->
-    gutil.log gutil.colors.red err, "on url", gutil.colors.red req.url
+    gutil.log gutil.colors.red err, 'on url', gutil.colors.red req.url
     res.end()
   proxy
 
 class Server
-  constructor: ()->
+  constructor: ->
     @server = http.createServer @onRequest
     @proxy = createProxyServer()
 
@@ -64,7 +64,7 @@ class Server
     proxyOptions = {changeOrigin: true}
     settings = if local then options.local else options.remotes
     proxyOptions.target = do ->
-      protocol = if settings.https then "https" else "http"
+      protocol = if settings.https then 'https' else 'http'
       "#{protocol}://#{settings.host}:#{settings.port}"
     @proxy.web req, res, proxyOptions
 
@@ -85,6 +85,7 @@ class Server
         else
           @proxyLocal req, res
     return null
+
 
 
 module.exports = ->

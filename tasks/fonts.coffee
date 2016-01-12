@@ -7,4 +7,4 @@ PROP = require '../lib/config'
 
 module.exports = ->
   gulp.src PROP.path.fonts()
-    .pipe gulp.dest PROP.path.fonts("dest"), {mode: 0o644}
+    .pipe gulp.dest PROP.path.fonts('dest'), {mode: 0o644}

@@ -9,13 +9,13 @@ $ = helpers.gulpLoad [
 ]
 
 module.exports = ->
-  condition = "**/_*.jade"
+  condition = '**/_*.jade'
   stream = gulp.src PROP.path.templates()
   .pipe $.if PROP.isNotify, $.plumber
     errorHandler: helpers.errorHandler
   .pipe $.ignore.exclude(condition)
   .pipe $.jade PROP.jade.options()
-  .pipe gulp.dest PROP.path.templates("dest")
+  .pipe gulp.dest PROP.path.templates 'dest'
   if PROP.isSrv
     stream.pipe browserSync.stream()
   stream

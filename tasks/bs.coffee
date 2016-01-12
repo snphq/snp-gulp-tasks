@@ -1,5 +1,5 @@
-browserSync = require "browser-sync"
-PROP = require "../lib/config"
+browserSync = require 'browser-sync'
+PROP = require '../lib/config'
 _ = require 'lodash'
 
 baseDir = [PROP.path.build()]
@@ -13,10 +13,10 @@ opts = _.defaults opts, {
 
 opts.server = {
   baseDir
-  index: "index.html"
+  index: 'index.html'
   routes: {
-    "/bower_components": "bower_components"
-    "/images": "images"
+    '/bower_components': 'bower_components'
+    '/images': 'images'
   }
 }
 

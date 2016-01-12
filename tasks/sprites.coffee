@@ -27,15 +27,14 @@ module.exports = (cb)->
   mergedCss = Merge()
   streams = {}
   sprites = getSprites()
-  mergedCss.add helpers.emptyStream "file.scss"
+  mergedCss.add helpers.emptyStream 'file.scss'
   for name, opts of sprites
     stream = gulp.src(opts.path).pipe $.sprites opts.settings
-    stream.img.pipe gulp.dest PROP.path.sprites "dest_images"
+    stream.img.pipe gulp.dest PROP.path.sprites 'dest_images'
     if opts.settings.cssFormat is 'json' and opts.settings.destCSS
       stream.css.pipe gulp.dest opts.settings.destCSS
     else
       mergedCss.add stream.css
   mergedCss
     .pipe $.concat ('_sprites.scss')
-    .pipe gulp.dest PROP.path.sprites "dest_styles"
-
+    .pipe gulp.dest PROP.path.sprites 'dest_styles'

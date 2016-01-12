@@ -1,21 +1,21 @@
-through2 = require "through2"
-gutil = require "gulp-util"
-libpath = require "path"
-postcss = require "postcss"
-urldata = require "urldata"
-atImport = require "postcss-import"
-fs = require "fs"
-_ = require "lodash"
-crypto = require "crypto"
-sass = require "node-sass"
+through2 = require 'through2'
+gutil = require 'gulp-util'
+libpath = require 'path'
+postcss = require 'postcss'
+urldata = require 'urldata'
+atImport = require 'postcss-import'
+fs = require 'fs'
+_ = require 'lodash'
+crypto = require 'crypto'
+sass = require 'node-sass'
 
 toHash = (contents)->
-  crypto.createHash("md5").update(contents).digest("hex")[..8]
+  crypto.createHash('md5').update(contents).digest('hex')[..8]
 
 #cache log operation of import files
 localCache = {}
 
-resource = (vendor_folder="vendor", external_folter="app/bower_components")-> through2.obj (file, enc, cb)->
+resource = (vendor_folder='vendor', external_folter='app/bower_components')-> through2.obj (file, enc, cb)->
   file_hash = toHash(file.contents)
   if(data = localCache[file.path])
     if file_hash is data.hash
@@ -46,7 +46,7 @@ resource = (vendor_folder="vendor", external_folter="app/bower_components")-> th
     ).process(file.contents).css
   catch e
     gutil.log e
-    result = ""
+    result = ''
   file.contents = new Buffer(result)
   localCache[file.path] = { hash: file_hash, file }
   @push file
@@ -59,38 +59,38 @@ resource.download = -> through2.obj (file, enc, cb)->
 
 analyse = (decl, vendor_folder, root, prefix)->
   urldata(decl.value).forEach (_item)->
-    return if _item.indexOf(";base64,") > -1 or _item.indexOf("data:image") is 0
-    item = _item.split("?")[0].split("#")[0]
+    return if _item.indexOf(';base64,') > -1 or _item.indexOf('data:image') is 0
+    item = _item.split('?')[0].split('#')[0]
 
     realpath = libpath.resolve root, item
     contents = resource.DATA.getContent(realpath)
     item_hash = toHash(contents)
     item_ext = libpath.extname(item)
-    item_name = libpath.basename(item,item_ext)
+    item_name = libpath.basename(item, item_ext)
     virtualpath = libpath.join(
       vendor_folder, prefix,
       "#{item_name}-#{item_hash}#{item_ext}"
     )
-    csspath = libpath.join "..", virtualpath
+    csspath = libpath.join '..', virtualpath
     decl.value = decl.value.replace item, csspath
     resource.DATA.push realpath, virtualpath
 
 resource.postcss_loader = (css, {opts})->
   {filename, vendor_folder, external_folter} = opts
-  abs_external_folder = libpath.resolve ".", external_folter
+  abs_external_folder = libpath.resolve '.', external_folter
   relative_filename = libpath.relative abs_external_folder, filename
   prefix = relative_filename.split(libpath.sep)[0]
   root = libpath.dirname(filename)
   css.walkAtRules (atRule)->
-    return if atRule.name isnt "font-face"
+    return if atRule.name isnt 'font-face'
     atRule.each (decl)->
-      return if decl.prop isnt "src"
+      return if decl.prop isnt 'src'
       analyse(decl, vendor_folder, root, prefix)
 
   css.walkDecls (decl)->
     isRecource = (
-      decl.prop.indexOf("background") > -1 or
-      decl.prop.indexOf("border-image") > -1
+      decl.prop.indexOf('background') > -1 or
+      decl.prop.indexOf('border-image') > -1
     )
     analyse(decl, vendor_folder, root, prefix) if isRecource
 
@@ -98,8 +98,8 @@ resource.postcss_loader = (css, {opts})->
 resource.DATA = {
   buf: []
   download: []
-  contents:{}
-  vendor_folder:""
+  contents: {}
+  vendor_folder: ''
   getContent: (realpath)->
     if @contents[realpath]
       @contents[realpath]
@@ -107,12 +107,12 @@ resource.DATA = {
       @contents[realpath] = fs.readFileSync(realpath)
 
   push: (realpath, virtualpath)->
-    if _.find @buf, {path:virtualpath}
+    if _.find @buf, {path: virtualpath}
       return
     contents = @getContent realpath
     file = new gutil.File {
-      cwd: ""
-      base: ""
+      cwd: ''
+      base: ''
       path: virtualpath
       contents
     }
