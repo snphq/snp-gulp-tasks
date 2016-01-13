@@ -12,17 +12,20 @@ $ = helpers.gulpLoad [
 
 PROP = require '../lib/config'
 
-module.exports =
-  deps: []
-  fn: (cb)->
-    new WebpackDevServer (webpack webpackConfig), {
-      publicPath: webpackConfig.output.publicPath,
-      filename: 'bundle.js'
-      inline: true
-      hot: true
-      stats:
-        colors: true
-    }
-    # .listen 8080, 'localhost', (err)->
-    #   throw new gutil.PluginError('webpack-dev-server', err) if err
-    #   cb()
+taskExecuted = false
+
+module.exports = (cb)->
+  if taskExecuted
+    throw new gutil.PluginError 'snp-gulp-tasks', 'Scripts task was executed twice!'
+  taskExecuted = true
+  new WebpackDevServer (webpack webpackConfig), {
+    publicPath: webpackConfig.output.publicPath,
+    filename: 'bundle.js'
+    inline: true
+    hot: true
+    stats:
+      colors: true
+  }
+  .listen 8080, '127.0.0.1', (err)->
+    throw new gutil.PluginError('webpack-dev-server', err) if err
+    cb()
