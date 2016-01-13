@@ -1,7 +1,6 @@
 gutil = require 'gulp-util'
 libpath = require 'path'
 through2 = require 'through2'
-mainbowerfiles = require 'main-bower-files'
 _ = require 'lodash'
 cfg = require libpath.resolve './.gulpconfig'
 

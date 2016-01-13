@@ -69,7 +69,6 @@
     "jade": "^1.8.2",
     "jstransformer-coffee-script": "^1.0.0",
     "lodash": "~3.10.1",
-    "main-bower-files": "^2.4.0",
     "merge-stream": "^1.0.0",
     "node-notifier": "^4.1.0",
     "node-sass": "^3.4.2",
@@ -80,7 +79,9 @@
     "rsvp": "^3.0.18",
     "through2": "^2.0.0",
     "urldata": "0.0.1",
-    "vinyl-paths": "^2.1.0"
+    "vinyl-paths": "^2.1.0",
+    "webpack": "^1.12.11",
+    "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
     "coffeelint": "^1.14.2",
