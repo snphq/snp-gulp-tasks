@@ -7,14 +7,15 @@ $ = helpers.gulpLoad [
   'filter'
 ]
 
-module.exports = ->
-  filter_noopt = $.filter (file)->
-    not /\.noopt\./.test file.path
+filterNoopt = $.filter ((file)->
+  not /\.noopt\./.test file.path
+), {restore: true}
 
+module.exports = ->
   gulp.src PROP.path.images 'jpg'
     .pipe $.size {title: 'JPG'}
-    .pipe filter_noopt
+    .pipe filterNoopt
     .pipe $.cache (jpegoptim max: 70)()
-    .pipe filter_noopt.restore()
+    .pipe filterNoopt.restore
     .pipe $.size {title: 'JPG(imagemin)'}
     .pipe gulp.dest PROP.path.images 'dest'
