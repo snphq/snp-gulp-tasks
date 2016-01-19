@@ -1,6 +1,5 @@
 module.exports = (gulp)->
   global.gulp = gulp
-  gutil = require 'gulp-util'
   gulpsync = require('gulp-sync')(gulp)
   libpath = require 'path'
 
