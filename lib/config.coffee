@@ -3,7 +3,7 @@ libpath = require 'path'
 through2 = require 'through2'
 _ = require 'lodash'
 cfg = require libpath.resolve './.gulpconfig'
-_modernizr = require libpath.resolve './webpack/_modernizr'
+features = (require libpath.resolve './webpack/_modernizr')['feature-detects']
 
 # config format validation
 do ->
@@ -65,7 +65,7 @@ PROP = do ->
         pretty: PROP.isDev
         data:
           jade_mode: PROP.jade.mode()
-          modernizr: (_modernizr['feature-detects'] && _modernizr['feature-detects'].length)
+          modernizr: (features && features.length)
         filters: {}
       result
 
