@@ -6,7 +6,6 @@ opts = {
   dontGlobal: [ /^\/favicon.ico$/g, /\/robots.txt$/g, /^\/files\//g ],
   dontRenameFile: ['\.html']
   dontUpdateReference: ['\.html']
-  dontSearchFile: ['\/modernizr\/modernizr\.js']
   prefix: PROP.cdn.host
 }
 

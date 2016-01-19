@@ -1,6 +1,6 @@
 path = require 'path'
 helpers = require  '../lib/helpers'
-webpackConfig = require path.resolve './webpack/dev'
+webpackConfig = (require path.resolve './webpack/dev')()
 webpack = require 'webpack'
 WebpackDevServer = require 'webpack-dev-server'
 gutil = require 'gulp-util'
