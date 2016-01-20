@@ -43,13 +43,6 @@ PROP = do ->
   isImageMin: cfg.imagemin? and not isDev
   getDefaultTaskList: cfg.getDefaultTaskList
 
-  preprocess: (prop=gutil.env.mode)->
-    context = switch prop
-      when 'dist' then DIST: true
-      when 'prod' then PROD: true
-      else DEBUG: true
-    {context}
-
   cdn: cdn
   browserSync: browserSync
 
