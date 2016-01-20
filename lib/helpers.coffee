@@ -7,8 +7,11 @@ module.exports =
     for l in libs
       try
         wrap[l] = require "gulp-#{l}"
-      catch
-        wrap[l] = require "../plugins/#{l}"
+      catch gulpPluginException
+        try
+          wrap[l] = require "../plugins/#{l}"
+        catch
+          throw new gutil.PluginError 'snp-gulp-tasks', gulpPluginException
     wrap
   errorHandler: (err)->
     notify.onError(
